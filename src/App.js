@@ -1,24 +1,43 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
+import Dog from './components/Dog';
 
 function App() {
+
+const [dog, setDog] = useState("");
+
+useEffect(() => {
+  
+  //alapállapot
+  axios.get('https://dog.ceo/api/breeds/image/random')
+  .then(res => setDog(res.data.message));
+
+}, [])
+
+//gombnyomásra lekér egy újabb képet
+
+const getRandomDog = () => {
+
+  axios.get('https://dog.ceo/api/breeds/image/random')
+  .then(res => setDog(res.data.message));
+  
+  document.getElementById('dogContainer').innerHTML = `<img src='${dog}' />`;
+
+}
+
+console.log(dog)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+
+      <div className='result'>
+        <h1>React-Random Api</h1>
+
+        <Dog id='dogContainer' click={getRandomDog} />
+        
+        </div>
+      
+    </>
   );
 }
 
